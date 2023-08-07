@@ -108,7 +108,7 @@ body{
     color: var(--cor-terciaria);
 }
 
-apresentacao_imagem{
+.apresentacao_imagem{
     width: 50%;
 }
 
