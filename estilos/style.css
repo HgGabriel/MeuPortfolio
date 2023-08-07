@@ -4,7 +4,7 @@
 :root {
     --cor-primaria: #121212;
     --cor-secundaria: #EDEDED;
-    --cor-hover: #461111;
+    --cor-hover: #303030;
     --cor-terciaria: #DA0037;
 
     --fonte-primaria: 'Krona One', sans-serif;
@@ -96,7 +96,7 @@ body {
     font-weight: 600;
 }
 
-.apresentacao__links__link:hover {
+.apresentacao__links__navegacao:hover {
     background-color: var(--cor-hover);
 }
 
