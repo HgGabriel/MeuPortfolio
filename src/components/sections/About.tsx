@@ -1,11 +1,8 @@
+import { Link } from 'react-router-dom'
 import { skills } from '../../data'
 import Watermark from '../Watermark'
 
-interface AboutProps {
-  onGoPersonal: () => void
-}
-
-export default function About({ onGoPersonal }: AboutProps) {
+export default function About() {
   return (
     <section
       data-sec="1"
@@ -33,13 +30,13 @@ export default function About({ onGoPersonal }: AboutProps) {
               Fora do trabalho, você me encontra ouvindo hip hop, mestrando uma mesa de RPG ou
               treinando para a próxima corrida.
             </p>
-            <div
-              onClick={onGoPersonal}
-              className="mt-7 inline-flex cursor-pointer items-center gap-[10px] font-oswald text-sm font-semibold tracking-[1px] text-accent"
+            <Link
+              to="/sobre"
+              className="mt-7 inline-flex items-center gap-[10px] font-oswald text-sm font-semibold tracking-[1px] text-accent"
             >
               <span className="h-[2px] w-[26px] bg-accent" />
               MAIS SOBRE MIM →
-            </div>
+            </Link>
           </Watermark>
           <Watermark direction="right" duration={700} delay={100} distance={28}>
             <div className="mb-4 font-oswald text-sm font-medium tracking-[1px] text-muted">

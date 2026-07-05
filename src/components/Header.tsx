@@ -1,16 +1,12 @@
 import { useState, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Globe, Sun, Moon, Menu, X } from 'lucide-react'
-import type { View, Lang } from '../App'
+import type { Lang } from '../App'
+import { useHomeNav } from '../contexts/HomeNavContext'
 
 interface HeaderProps {
-  view: View
-  section: number
   lang: Lang
   theme: 'dark' | 'light'
-  onNav: (i: number) => void
-  onGoHome: () => void
-  onGoPersonal: () => void
-  onGoProjDetails: () => void
   onToggleLang: () => void
   onToggleTheme: () => void
 }
@@ -23,21 +19,21 @@ const NAV_ITEMS = [
   { label: 'Connect', sec: 4 },
 ]
 
-export default function Header({
-  view,
-  section,
-  lang,
-  theme,
-  onNav,
-  onGoHome,
-  onGoPersonal,
-  onGoProjDetails,
-  onToggleLang,
-  onToggleTheme,
-}: HeaderProps) {
+export default function Header({ lang, theme, onToggleLang, onToggleTheme }: HeaderProps) {
   const [aboutOpen, setAboutOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { section, scrollTo } = useHomeNav()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const onHome = location.pathname === '/'
+
+  // On the home route, scroll to the section; elsewhere, navigate home and
+  // let HomePage pick up the target section from location.state.
+  const goSection = (sec: number) => {
+    if (onHome) scrollTo.current?.(sec)
+    else navigate('/', { state: { sec } })
+  }
 
   const handleAboutLeave = () => {
     closeTimeoutRef.current = setTimeout(() => setAboutOpen(false), 150)
@@ -49,16 +45,22 @@ export default function Header({
   }
 
   const navClass = (sec: number) => {
-    const active = view === 'main' && section === sec
+    const active = onHome && section === sec
     return `cursor-pointer transition-colors duration-200 ${
       active ? 'font-semibold text-fg' : 'font-normal text-navc'
     }`
   }
 
+  const dropdownItemClass =
+    'flex cursor-pointer items-center justify-between rounded-[9px] px-[13px] py-[11px] text-[13.5px] font-medium text-fg transition-colors duration-150 hover:bg-soft'
+
+  const mobileLinkClass =
+    'flex cursor-pointer items-center justify-between rounded-[10px] px-3 py-[13px] text-[15px] tracking-[0.5px] text-muted transition-colors duration-150 hover:bg-soft'
+
   // Mobile menu: navigate then close the panel.
   const mobileNav = (sec: number) => {
     setMenuOpen(false)
-    onNav(sec)
+    goSection(sec)
   }
 
   return (
@@ -67,7 +69,7 @@ export default function Header({
       <div
         onClick={() => {
           setMenuOpen(false)
-          onGoHome()
+          goSection(0)
         }}
         className="flex cursor-pointer items-center gap-[2px] font-poppins text-[26px] leading-none font-extrabold tracking-[-1px]"
       >
@@ -88,7 +90,7 @@ export default function Header({
               <span
                 onClick={() => {
                   setAboutOpen(false)
-                  onNav(item.sec)
+                  goSection(item.sec)
                 }}
                 className={navClass(item.sec)}
               >
@@ -100,37 +102,33 @@ export default function Header({
                   <div
                     onClick={() => {
                       setAboutOpen(false)
-                      onNav(1)
+                      goSection(1)
                     }}
                     className="cursor-pointer rounded-[9px] px-[13px] py-[11px] text-[13.5px] font-medium text-fg transition-colors duration-150 hover:bg-soft"
                   >
                     Seção Sobre
                   </div>
-                  <div
-                    onClick={() => {
-                      setAboutOpen(false)
-                      onGoPersonal()
-                    }}
-                    className="flex cursor-pointer items-center justify-between rounded-[9px] px-[13px] py-[11px] text-[13.5px] font-medium text-fg transition-colors duration-150 hover:bg-soft"
+                  <Link
+                    to="/sobre"
+                    onClick={() => setAboutOpen(false)}
+                    className={dropdownItemClass}
                   >
                     <span>Mais sobre mim</span>
                     <span className="text-accent">→</span>
-                  </div>
-                  <div
-                    onClick={() => {
-                      setAboutOpen(false)
-                      onGoProjDetails()
-                    }}
-                    className="flex cursor-pointer items-center justify-between rounded-[9px] px-[13px] py-[11px] text-[13.5px] font-medium text-fg transition-colors duration-150 hover:bg-soft"
+                  </Link>
+                  <Link
+                    to="/projetos"
+                    onClick={() => setAboutOpen(false)}
+                    className={dropdownItemClass}
                   >
-                    <span>Detalhes dos projetos</span>
+                    <span>Todos os projetos</span>
                     <span className="text-accent">→</span>
-                  </div>
+                  </Link>
                 </div>
               )}
             </div>
           ) : (
-            <span key={item.label} onClick={() => onNav(item.sec)} className={navClass(item.sec)}>
+            <span key={item.label} onClick={() => goSection(item.sec)} className={navClass(item.sec)}>
               {item.label}
             </span>
           ),
@@ -168,7 +166,7 @@ export default function Header({
       {menuOpen && (
         <div className="absolute inset-x-0 top-16 animate-drop-in border-b border-line bg-bg px-5 pb-4 pt-2 font-oswald shadow-[0_18px_50px_rgba(0,0,0,0.28)] sm:px-8 lg:hidden">
           {NAV_ITEMS.map((item) => {
-            const active = view === 'main' && section === item.sec
+            const active = onHome && section === item.sec
             return (
               <div
                 key={item.label}
@@ -182,26 +180,14 @@ export default function Header({
             )
           })}
           <div className="my-1 h-px bg-line" />
-          <div
-            onClick={() => {
-              setMenuOpen(false)
-              onGoPersonal()
-            }}
-            className="flex cursor-pointer items-center justify-between rounded-[10px] px-3 py-[13px] text-[15px] tracking-[0.5px] text-muted transition-colors duration-150 hover:bg-soft"
-          >
+          <Link to="/sobre" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>
             <span>Mais sobre mim</span>
             <span className="text-accent">→</span>
-          </div>
-          <div
-            onClick={() => {
-              setMenuOpen(false)
-              onGoProjDetails()
-            }}
-            className="flex cursor-pointer items-center justify-between rounded-[10px] px-3 py-[13px] text-[15px] tracking-[0.5px] text-muted transition-colors duration-150 hover:bg-soft"
-          >
-            <span>Detalhes dos projetos</span>
+          </Link>
+          <Link to="/projetos" onClick={() => setMenuOpen(false)} className={mobileLinkClass}>
+            <span>Todos os projetos</span>
             <span className="text-accent">→</span>
-          </div>
+          </Link>
         </div>
       )}
     </header>
