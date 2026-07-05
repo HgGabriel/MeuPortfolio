@@ -11,7 +11,7 @@ const INTENSITY = 0.22;
 const DOT_VW = 0.15;
 const GUTTER_VW = 0.47;
 const LINE_WEIGHT = 0.5;
-const PERIOD_MS = 7000; // one full alternate back-and-forth pulse
+const PERIOD_MS = 20000; // one full alternate back-and-forth pulse
 
 const BOOST_RADIUS_VW = 14; // reach of the cursor's influence around each cell
 const BOOST_OPACITY = 0.6; // extra opacity added at the cursor's center

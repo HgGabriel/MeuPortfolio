@@ -19,16 +19,26 @@ export default function App() {
   const [section, setSection] = useState(0)
   const [lang, setLang] = useState<Lang>('PT')
   const rootRef = useRef<HTMLDivElement>(null)
+  // Locks wheel/keyboard input while a snap animation is running.
+  const animatingRef = useRef(false)
+  // Mirrors `section` so event handlers read the current value without stale closures.
+  const sectionRef = useRef(0)
+  const lockTimerRef = useRef(0)
 
   useEffect(() => {
     document.documentElement.classList.toggle('light', theme === 'light')
   }, [theme])
 
+  useEffect(() => {
+    sectionRef.current = section
+  }, [section])
+
   // Scroll-spy: highlight the section closest to the viewport
   useEffect(() => {
     if (view !== 'main') return
     const onScroll = () => {
-      if (!rootRef.current) return
+      // Don't fight the snap animation — it sets the active section explicitly.
+      if (animatingRef.current || !rootRef.current) return
       const secs = rootRef.current.querySelectorAll<HTMLElement>('[data-sec]')
       const y = window.scrollY + window.innerHeight * 0.35
       let cur = 0
@@ -49,6 +59,14 @@ export default function App() {
         if (el) {
           const top = el.getBoundingClientRect().top + window.scrollY - 56
           window.scrollTo({ top, behavior: 'smooth' })
+          sectionRef.current = i
+          setSection(i)
+          // Hold the lock for the duration of the smooth scroll.
+          animatingRef.current = true
+          clearTimeout(lockTimerRef.current)
+          lockTimerRef.current = window.setTimeout(() => {
+            animatingRef.current = false
+          }, 800)
         }
       }
       if (view !== 'main') {
@@ -60,6 +78,70 @@ export default function App() {
     },
     [view],
   )
+
+  // Snappy section navigation: one wheel flick / arrow key = next section
+  useEffect(() => {
+    if (view !== 'main') return
+
+    const sections = () =>
+      Array.from(rootRef.current?.querySelectorAll<HTMLElement>('[data-sec]') ?? [])
+
+    const go = (dir: number) => {
+      const next = sectionRef.current + dir
+      if (next < 0 || next >= sections().length) return false
+      scrollToSection(next)
+      return true
+    }
+
+    // Timestamp of the previous wheel event, used to tell a fresh flick apart
+    // from the inertia tail of the gesture that already triggered a snap.
+    let lastWheel = 0
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 4) return
+      const gap = e.timeStamp - lastWheel
+      lastWheel = e.timeStamp
+
+      // During the snap animation, swallow scrolls but let the fixed-duration
+      // lock expire on its own — never renew it, or it stays stuck.
+      if (animatingRef.current) {
+        e.preventDefault()
+        return
+      }
+      // Ignore momentum/continuation events; only act on the start of a gesture.
+      if (gap < 120) return
+
+      const dir = e.deltaY > 0 ? 1 : -1
+      // If the current section is taller than the viewport, let the user scroll
+      // through it naturally before snapping to the next one.
+      const cur = sections()[sectionRef.current]
+      if (cur) {
+        const rect = cur.getBoundingClientRect()
+        if (dir > 0 && rect.bottom > window.innerHeight + 2) return
+        if (dir < 0 && rect.top < -2) return
+      }
+      if (go(dir)) e.preventDefault()
+    }
+
+    const onKey = (e: KeyboardEvent) => {
+      if (animatingRef.current) return
+      const tag = (e.target as HTMLElement)?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return
+      let dir = 0
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) dir = 1
+      else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) dir = -1
+      else return
+      if (go(dir)) e.preventDefault()
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('keydown', onKey)
+      clearTimeout(lockTimerRef.current)
+    }
+  }, [view, scrollToSection])
 
   const goDetails = useCallback((target: 'personal' | 'proj') => {
     setView('details')
