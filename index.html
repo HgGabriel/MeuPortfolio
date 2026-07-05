@@ -10,8 +10,24 @@
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <script type="module" crossorigin src="/MeuPortfolio/assets/index-NdAqZObG.js"></script>
-    <link rel="stylesheet" crossorigin href="/MeuPortfolio/assets/index-opiybhUg.css">
+    <script>
+      // Desfaz o redirect do 404.html (spa-github-pages): converte
+      // /?/projetos/x de volta em /projetos/x antes do app carregar.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&');
+            })
+            .join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
+    <script type="module" crossorigin src="/MeuPortfolio/assets/index-CN1GsIl6.js"></script>
+    <link rel="stylesheet" crossorigin href="/MeuPortfolio/assets/index-BvXY4q19.css">
   </head>
   <body>
     <div id="root"></div>
