@@ -79,7 +79,10 @@ export default function GridPulseBackground() {
     };
 
     const resize = () => {
-      size = window.innerWidth + window.innerWidth / COLS;
+      // Canvas is a square centered over the viewport — size it off the
+      // larger dimension so it fully covers portrait (mobile) layouts too.
+      const dim = Math.max(window.innerWidth, window.innerHeight);
+      size = dim + dim / COLS;
       canvas.width = size * dpr;
       canvas.height = size * dpr;
       canvas.style.width = `${size}px`;

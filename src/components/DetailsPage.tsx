@@ -8,7 +8,7 @@ export default function DetailsPage({ onGoHome }: DetailsPageProps) {
   return (
     <main className="pt-16">
       {/* PERSONAL */}
-      <section id="personal" className="relative overflow-hidden pt-[70px] pr-[90px] pb-[60px] pl-[120px]">
+      <section id="personal" className="relative overflow-hidden px-6 pt-[54px] pb-14 sm:px-10 lg:pt-[70px] lg:pr-[90px] lg:pb-[60px] lg:pl-[120px]">
         <div className="mx-auto w-full max-w-[1180px]">
           <div
             onClick={onGoHome}
@@ -17,7 +17,7 @@ export default function DetailsPage({ onGoHome }: DetailsPageProps) {
             ← VOLTAR AO INÍCIO
           </div>
           <div className="mb-3 font-oswald text-[15px] tracking-[2px] text-accent">FORA DA TELA</div>
-          <h1 className="mb-[18px] font-poppins text-[58px] leading-[1.05] font-extrabold tracking-[-1.5px] text-fg">
+          <h1 className="mb-[18px] font-poppins text-[34px] leading-[1.05] font-extrabold tracking-[-1.5px] text-fg sm:text-[46px] lg:text-[58px]">
             Um pouco
             <br />
             mais sobre mim
@@ -27,7 +27,7 @@ export default function DetailsPage({ onGoHome }: DetailsPageProps) {
             do teclado:
           </p>
 
-          <div className="grid grid-cols-3 gap-7">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
             {hobbies.map((h) => (
               <div
                 key={h.title}
@@ -43,8 +43,8 @@ export default function DetailsPage({ onGoHome }: DetailsPageProps) {
             ))}
           </div>
 
-          <div className="mt-10 flex items-center gap-7 rounded-[20px] border border-line bg-linear-[120deg,rgba(229,50,42,0.14),rgba(229,50,42,0.03)] px-10 py-[34px]">
-            <div className="font-poppins text-[52px] leading-none font-extrabold text-accent">15K</div>
+          <div className="mt-10 flex flex-col items-start gap-5 rounded-[20px] border border-line bg-linear-[120deg,rgba(229,50,42,0.14),rgba(229,50,42,0.03)] px-6 py-8 sm:flex-row sm:items-center sm:gap-7 sm:px-10 sm:py-[34px]">
+            <div className="font-poppins text-[42px] leading-none font-extrabold text-accent sm:text-[52px]">15K</div>
             <div>
               <div className="font-poppins text-[19px] font-semibold text-fg">
                 Rumo à minha primeira São Silvestre
@@ -59,17 +59,17 @@ export default function DetailsPage({ onGoHome }: DetailsPageProps) {
       </section>
 
       {/* PROJECT DETAILS */}
-      <section id="proj" className="relative overflow-hidden pt-[60px] pr-[90px] pb-[90px] pl-[120px]">
+      <section id="proj" className="relative overflow-hidden px-6 pt-12 pb-16 sm:px-10 lg:pt-[60px] lg:pr-[90px] lg:pb-[90px] lg:pl-[120px]">
         <div className="mx-auto w-full max-w-[1180px]">
           <div className="mb-3 font-oswald text-[15px] tracking-[2px] text-accent">PORTFÓLIO</div>
-          <h2 className="mb-11 font-poppins text-5xl font-extrabold tracking-[-1px] text-fg">
+          <h2 className="mb-8 font-poppins text-[34px] font-extrabold tracking-[-1px] text-fg sm:text-[44px] lg:mb-11 lg:text-5xl">
             Detalhes dos projetos
           </h2>
           <div className="flex flex-col gap-[30px]">
             {projects.map((p) => (
               <div
                 key={p.name}
-                className="grid grid-cols-[.85fr_1.15fr] items-center gap-10 rounded-[20px] border border-line bg-card p-7 transition-colors duration-200 hover:border-accent"
+                className="grid grid-cols-1 gap-6 rounded-[20px] border border-line bg-card p-5 transition-colors duration-200 hover:border-accent sm:p-7 lg:grid-cols-[.85fr_1.15fr] lg:items-center lg:gap-10"
               >
                 <div className="flex aspect-[16/10] items-center justify-center rounded-xl border border-line bg-[repeating-linear-gradient(135deg,var(--soft)_0,var(--soft)_1px,transparent_1px,transparent_13px)]">
                   <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">

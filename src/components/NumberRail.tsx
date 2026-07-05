@@ -7,7 +7,7 @@ interface NumberRailProps {
 
 export default function NumberRail({ section, onNav }: NumberRailProps) {
   return (
-    <div className="pointer-events-none fixed inset-y-0 left-[30px] z-40 flex flex-col items-center justify-center gap-[22px]">
+    <div className="pointer-events-none fixed inset-y-0 left-[30px] z-40 hidden flex-col items-center justify-center gap-[22px] lg:flex">
       {LABELS.map((label, i) => {
         const active = section === i
         return (

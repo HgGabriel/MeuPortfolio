@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Mail, Linkedin, Github, Instagram } from 'lucide-react'
 import GridPulseBackground from './components/GridPulseBackground'
 import Header from './components/Header'
 import NumberRail from './components/NumberRail'
@@ -183,7 +184,25 @@ export default function App() {
           <Experience />
           <Projects onExplore={() => goDetails('proj')} />
           <Connect />
-          <footer className="border-t border-line p-10 text-center font-oswald text-[13px] tracking-[0.5px] text-muted">
+          <footer className="border-t border-line px-6 py-8 text-center font-oswald text-[13px] tracking-[0.5px] text-muted sm:p-10">
+            <div className="mb-5 flex justify-center gap-7 lg:hidden">
+              {[
+                { label: 'Email', icon: Mail },
+                { label: 'LinkedIn', icon: Linkedin },
+                { label: 'GitHub', icon: Github },
+                { label: 'Instagram', icon: Instagram },
+              ].map(({ label, icon: Icon }) => (
+                <a
+                  key={label}
+                  href="#"
+                  aria-label={label}
+                  onClick={(e) => e.preventDefault()}
+                  className="text-muted transition-colors duration-200 hover:text-accent"
+                >
+                  <Icon size={20} strokeWidth={1.6} />
+                </a>
+              ))}
+            </div>
             © 2026 Hiago Gabriel — Feito com café e código
           </footer>
         </main>

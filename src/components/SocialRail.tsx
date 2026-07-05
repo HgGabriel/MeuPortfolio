@@ -9,7 +9,7 @@ const LINKS = [
 
 export default function SocialRail() {
   return (
-    <div className="fixed inset-y-0 right-7 z-40 flex flex-col items-center justify-center gap-5">
+    <div className="fixed inset-y-0 right-7 z-40 hidden flex-col items-center justify-center gap-5 lg:flex">
       <div className="h-14 w-px bg-line" />
       {LINKS.map(({ label, icon: Icon }) => (
         <a
