@@ -40,7 +40,21 @@ export interface Experience {
   period: string
   role: string
   org: string
-  desc: string
+  /** Caminho da logo da empresa (ex: '/logos/empresa.svg'). Vazio = usa o monograma. */
+  logo?: string
+  /** Tecnologias usadas na experiência. */
+  stack: string[]
+  /** Atividades principais, uma por bullet. */
+  activities: string[]
+}
+
+/** Cartão-resumo fixo ao lado da timeline de experiências. */
+export interface ExperienceSnapshot {
+  stats: { value: string; label: string }[]
+  available: boolean
+  availability: string
+  coreStack: string[]
+  cvHref: string
 }
 
 export interface Education {
@@ -231,24 +245,51 @@ export const minorProjects: MinorProject[] = [
 
 export const experience: Experience[] = [
   {
-    period: 'Placeholder',
+    period: 'Placeholder — Atual',
     role: 'Placeholder',
-    org: 'Placeholder',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    org: 'Empresa Placeholder',
+    logo: '',
+    stack: ['React', 'TypeScript', 'Node.js'],
+    activities: [
+      'Primeira atividade principal — o que você fez e o impacto gerado.',
+      'Segunda atividade — uma responsabilidade técnica ou entrega relevante.',
+      'Terceira atividade — colaboração, processo ou resultado mensurável.',
+    ],
   },
   {
     period: 'Placeholder',
     role: 'Placeholder',
-    org: 'Placeholder',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    org: 'Empresa Placeholder',
+    logo: '',
+    stack: ['JavaScript', 'CSS', 'Git'],
+    activities: [
+      'Primeira atividade principal — o que você fez e o impacto gerado.',
+      'Segunda atividade — uma responsabilidade técnica ou entrega relevante.',
+    ],
   },
   {
     period: 'Placeholder',
     role: 'Placeholder',
-    org: 'Placeholder',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    org: 'Empresa Placeholder',
+    logo: '',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    activities: [
+      'Primeira atividade principal — o que você fez e o impacto gerado.',
+      'Segunda atividade — uma responsabilidade técnica ou entrega relevante.',
+    ],
   },
 ]
+
+export const experienceSnapshot: ExperienceSnapshot = {
+  stats: [
+    { value: '2+', label: 'anos de experiência' },
+    { value: '8', label: 'projetos entregues' },
+  ],
+  available: true,
+  availability: 'Disponível para novos projetos',
+  coreStack: ['React', 'TypeScript', 'Node.js', 'PostgreSQL'],
+  cvHref: '#',
+}
 
 export const education: Education[] = [
   {
