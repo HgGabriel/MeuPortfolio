@@ -50,7 +50,7 @@ export default function Home({ onGoConnect }: HomeProps) {
             BRIEL
           </div>
           <div className="relative z-2 size-[380px] animate-glow overflow-hidden rounded-3xl border border-line">
-            <img src="/hero.gif" alt="hero" className="block size-full object-cover" />
+            <img src={`${import.meta.env.BASE_URL}hero.gif`} alt="hero" className="block size-full object-cover" />
           </div>
         </div>
       </div>
