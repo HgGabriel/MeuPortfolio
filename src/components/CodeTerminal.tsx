@@ -164,11 +164,12 @@ export default function CodeTerminal() {
   // Auto-run the "execution" once typing has finished (unless motion is reduced)
   useEffect(() => {
     if (isTyping || reducedMotion) return;
+    if (charCount < totalLength) return;
     if (outputLines.length > 0) return;
     const id = window.setTimeout(runExecution, 600);
     timeoutsRef.current.push(id);
     return () => clearTimeout(id);
-  }, [isTyping, reducedMotion, outputLines.length, runExecution]);
+  }, [isTyping, reducedMotion, charCount, outputLines.length, runExecution]);
 
   // Cancel any pending timeouts on unmount
   useEffect(() => clearScheduled, [clearScheduled]);

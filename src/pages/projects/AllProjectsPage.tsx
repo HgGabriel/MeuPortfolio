@@ -1,9 +1,72 @@
 import type { CSSProperties } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { featuredProjects, minorProjects } from '../../data'
+import { featuredProjects, minorProjects, tagCategories } from '../../data'
 import Watermark from '../../components/Watermark'
 
+const normalize = (s: string) =>
+  s
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+
+const selectClass =
+  'rounded-[40px] border border-line bg-card px-4 py-[9px] font-oswald text-[13px] tracking-[0.5px] text-muted outline-none transition-colors focus:border-accent'
+
 export default function AllProjectsPage() {
+  const [query, setQuery] = useState('')
+  const [stack, setStack] = useState('')
+  const [tag, setTag] = useState('')
+  const [year, setYear] = useState('')
+  const [platform, setPlatform] = useState('')
+
+  const allProjects = useMemo(() => [...featuredProjects, ...minorProjects], [])
+
+  const { stackOptions, platformOptions, tagOptions, yearOptions } = useMemo(() => {
+    const stackSet = new Set<string>()
+    const platformSet = new Set<string>()
+    const tagSet = new Set<string>()
+    const yearSet = new Set<string>()
+
+    for (const p of allProjects) {
+      yearSet.add(p.year)
+      for (const t of p.tags) {
+        const category = tagCategories[t]
+        if (category === 'stack') stackSet.add(t)
+        else if (category === 'plataforma') platformSet.add(t)
+        else tagSet.add(t)
+      }
+    }
+
+    return {
+      stackOptions: [...stackSet].sort(),
+      platformOptions: [...platformSet].sort(),
+      tagOptions: [...tagSet].sort(),
+      yearOptions: [...yearSet].sort((a, b) => Number(b) - Number(a)),
+    }
+  }, [allProjects])
+
+  const hasActiveFilters = query !== '' || stack !== '' || tag !== '' || year !== '' || platform !== ''
+
+  const clearFilters = () => {
+    setQuery('')
+    setStack('')
+    setTag('')
+    setYear('')
+    setPlatform('')
+  }
+
+  const matches = <T extends { name: string; year: string; tags: string[] }>(p: T) =>
+    normalize(p.name).includes(normalize(query)) &&
+    (stack === '' || p.tags.includes(stack)) &&
+    (tag === '' || p.tags.includes(tag)) &&
+    (year === '' || p.year === year) &&
+    (platform === '' || p.tags.includes(platform))
+
+  const filteredFeatured = useMemo(() => featuredProjects.filter(matches), [query, stack, tag, year, platform])
+  const filteredMinor = useMemo(() => minorProjects.filter(matches), [query, stack, tag, year, platform])
+  const noResults = filteredFeatured.length === 0 && filteredMinor.length === 0
+
   return (
     <main className="pt-16">
       <section className="relative overflow-hidden px-6 pt-[54px] pb-16 sm:px-10 lg:pt-[70px] lg:pr-[90px] lg:pb-[90px] lg:pl-[120px]">
@@ -18,80 +81,165 @@ export default function AllProjectsPage() {
           <h1 className="mb-4 font-poppins text-[34px] font-extrabold tracking-[-1px] text-fg sm:text-[44px] lg:text-5xl">
             Todos os meus projetos
           </h1>
-          <p className="mb-12 max-w-[560px] text-[16px] leading-[1.8] text-muted">
+          <p className="mb-8 max-w-[560px] text-[16px] leading-[1.8] text-muted">
             Os oito em destaque têm uma página própria, com a história completa de cada um. Os
             demais são experimentos e projetos menores que também valem uma olhada.
           </p>
 
-          {/* EM DESTAQUE */}
-          <div className="mb-6 font-oswald text-[13px] tracking-[2px] text-muted">EM DESTAQUE</div>
-          <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-7">
-            {featuredProjects.map((p, i) => (
-              <Watermark key={p.slug} direction="up" duration={600} delay={i * 60} distance={22}>
-                <Link
-                  to={`/projetos/${p.slug}`}
-                  style={{ '--accent-project': p.accent, '--accent-project-soft': p.accentSoft } as CSSProperties}
-                  className="group flex h-full flex-col rounded-[20px] border border-line bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-(--accent-project) sm:p-7"
+          {/* BUSCA E FILTROS */}
+          <div className="mb-14">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Buscar por nome..."
+              className="mb-4 w-full rounded-[40px] border border-line bg-card px-[22px] py-[13px] font-poppins text-[15px] text-fg placeholder:text-muted focus:border-accent focus:outline-none"
+            />
+            <div className="flex flex-wrap items-center gap-3">
+              <select value={stack} onChange={(e) => setStack(e.target.value)} className={selectClass}>
+                <option value="">Stack</option>
+                {stackOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              <select value={tag} onChange={(e) => setTag(e.target.value)} className={selectClass}>
+                <option value="">Tag</option>
+                {tagOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              <select value={year} onChange={(e) => setYear(e.target.value)} className={selectClass}>
+                <option value="">Ano</option>
+                {yearOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              <select value={platform} onChange={(e) => setPlatform(e.target.value)} className={selectClass}>
+                <option value="">Plataforma</option>
+                {platformOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="font-oswald text-[13px] tracking-[0.5px] text-accent transition-opacity hover:opacity-75"
                 >
-                  <div className="mb-5 flex aspect-[16/9] items-center justify-center rounded-[12px] border border-line bg-(--accent-project-soft)">
-                    <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">
-                      {p.shot}
-                    </span>
-                  </div>
-                  <div className="mb-2 flex items-baseline justify-between gap-3 font-oswald text-[12.5px] tracking-[1.5px]">
-                    <span className="text-(--accent-project)">{p.year}</span>
-                    <span className="text-muted uppercase">{p.role}</span>
-                  </div>
-                  <h2 className="mb-2 font-poppins text-[22px] font-semibold text-fg">{p.name}</h2>
-                  <p className="mb-5 text-[14.5px] leading-[1.7] text-muted">{p.tagline}</p>
-                  <div className="mt-auto inline-flex items-center gap-[10px] font-oswald text-[13px] font-semibold tracking-[1px] text-(--accent-project)">
-                    <span className="h-[2px] w-[26px] bg-(--accent-project) transition-all duration-200 group-hover:w-[40px]" />
-                    VER PROJETO
-                  </div>
-                </Link>
-              </Watermark>
-            ))}
+                  Limpar
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* OUTROS PROJETOS */}
-          <div className="mb-6 font-oswald text-[13px] tracking-[2px] text-muted">
-            OUTROS PROJETOS
-          </div>
-          <div className="flex flex-col gap-4">
-            {minorProjects.map((p, i) => (
-              <Watermark key={p.slug} direction="up" duration={550} delay={i * 50} distance={18}>
-                <Link
-                  to={`/projetos/${p.slug}`}
-                  className="group flex flex-col gap-3 rounded-[16px] border border-line bg-card px-6 py-5 transition-colors duration-200 hover:border-accent sm:flex-row sm:items-center sm:justify-between sm:gap-6"
-                >
-                  <div className="flex items-baseline gap-4">
-                    <span className="font-oswald text-[12.5px] tracking-[1.5px] text-accent">
-                      {p.year}
-                    </span>
-                    <div>
-                      <div className="font-poppins text-[17px] font-semibold text-fg">{p.name}</div>
-                      <div className="mt-[2px] text-[14px] leading-[1.6] text-muted">{p.desc}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="hidden flex-wrap gap-2 sm:flex">
-                      {p.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-[20px] border border-line px-3 py-[4px] font-oswald text-[12px] tracking-[0.5px] text-muted"
-                        >
-                          {t}
+          {noResults && (
+            <div className="flex flex-col items-center gap-4 rounded-[20px] border border-line bg-card px-6 py-16 text-center">
+              <p className="text-[15px] text-muted">Nenhum projeto encontrado com esses filtros.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="font-oswald text-[13px] tracking-[0.5px] text-accent transition-opacity hover:opacity-75"
+              >
+                Limpar filtros
+              </button>
+            </div>
+          )}
+
+          {/* EM DESTAQUE */}
+          {filteredFeatured.length > 0 && (
+            <>
+              <div className="mb-6 font-oswald text-[13px] tracking-[2px] text-muted">EM DESTAQUE</div>
+              <div className="mb-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-7">
+                {filteredFeatured.map((p, i) => (
+                  <Watermark key={p.slug} direction="up" duration={600} delay={i * 60} distance={22}>
+                    <Link
+                      to={`/projetos/${p.slug}`}
+                      style={{ '--accent-project': p.accent, '--accent-project-soft': p.accentSoft } as CSSProperties}
+                      className="group flex h-full flex-col rounded-[20px] border border-line bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-(--accent-project) sm:p-7"
+                    >
+                      <div className="mb-5 flex aspect-[16/9] items-center justify-center rounded-[12px] border border-line bg-(--accent-project-soft)">
+                        <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">
+                          {p.shot}
                         </span>
-                      ))}
-                    </span>
-                    <span className="font-oswald text-accent transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </div>
-                </Link>
-              </Watermark>
-            ))}
-          </div>
+                      </div>
+                      <div className="mb-2 flex items-baseline justify-between gap-3 font-oswald text-[12.5px] tracking-[1.5px]">
+                        <span className="text-(--accent-project)">{p.year}</span>
+                        <span className="text-muted uppercase">{p.role}</span>
+                      </div>
+                      <h2 className="mb-2 font-poppins text-[22px] font-semibold text-fg">{p.name}</h2>
+                      <p className="mb-4 text-[14.5px] leading-[1.7] text-muted">{p.tagline}</p>
+                      <span className="mb-5 flex flex-wrap gap-2">
+                        {p.tags.slice(0, 3).map((t) => (
+                          <span
+                            key={t}
+                            className="rounded-[20px] border border-line px-3 py-[4px] font-oswald text-[12px] tracking-[0.5px] text-muted"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </span>
+                      <div className="mt-auto inline-flex items-center gap-[10px] font-oswald text-[13px] font-semibold tracking-[1px] text-(--accent-project)">
+                        <span className="h-[2px] w-[26px] bg-(--accent-project) transition-all duration-200 group-hover:w-[40px]" />
+                        VER PROJETO
+                      </div>
+                    </Link>
+                  </Watermark>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* OUTROS PROJETOS */}
+          {filteredMinor.length > 0 && (
+            <>
+              <div className="mb-6 font-oswald text-[13px] tracking-[2px] text-muted">
+                OUTROS PROJETOS
+              </div>
+              <div className="flex flex-col gap-4">
+                {filteredMinor.map((p, i) => (
+                  <Watermark key={p.slug} direction="up" duration={550} delay={i * 50} distance={18}>
+                    <Link
+                      to={`/projetos/${p.slug}`}
+                      className="group flex flex-col gap-3 rounded-[16px] border border-line bg-card px-6 py-5 transition-colors duration-200 hover:border-accent sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+                    >
+                      <div className="flex items-baseline gap-4">
+                        <span className="font-oswald text-[12.5px] tracking-[1.5px] text-accent">
+                          {p.year}
+                        </span>
+                        <div>
+                          <div className="font-poppins text-[17px] font-semibold text-fg">{p.name}</div>
+                          <div className="mt-[2px] text-[14px] leading-[1.6] text-muted">{p.desc}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="hidden flex-wrap gap-2 sm:flex">
+                          {p.tags.map((t) => (
+                            <span
+                              key={t}
+                              className="rounded-[20px] border border-line px-3 py-[4px] font-oswald text-[12px] tracking-[0.5px] text-muted"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </span>
+                        <span className="font-oswald text-accent transition-transform duration-200 group-hover:translate-x-1">
+                          →
+                        </span>
+                      </div>
+                    </Link>
+                  </Watermark>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
     </main>

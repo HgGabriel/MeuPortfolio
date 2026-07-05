@@ -17,6 +17,48 @@ export interface ProjectBase {
   links: ProjectLinks
 }
 
+export type TagCategory = 'stack' | 'plataforma' | 'proposito' | 'competencia'
+
+/** Classifica cada tag conhecida; tags não listadas caem no filtro "Tag" genérico. */
+export const tagCategories: Record<string, TagCategory> = {
+  React: 'stack',
+  'Node.js': 'stack',
+  TypeScript: 'stack',
+  PostgreSQL: 'stack',
+  'Next.js': 'stack',
+  Prisma: 'stack',
+  Docker: 'stack',
+  Redis: 'stack',
+  'React Native': 'stack',
+  Expo: 'stack',
+  Firebase: 'stack',
+  Vite: 'stack',
+  Tailwind: 'stack',
+  Stripe: 'stack',
+  MongoDB: 'stack',
+  Express: 'stack',
+  JavaScript: 'stack',
+  HTML: 'stack',
+  CSS: 'stack',
+  SQLite: 'stack',
+  Web: 'plataforma',
+  Mobile: 'plataforma',
+  Desktop: 'plataforma',
+  API: 'plataforma',
+  'E-commerce': 'proposito',
+  Dashboard: 'proposito',
+  'Landing Page': 'proposito',
+  SaaS: 'proposito',
+  Ferramenta: 'proposito',
+  Jogo: 'proposito',
+  Acessibilidade: 'competencia',
+  Performance: 'competencia',
+  'UI/UX': 'competencia',
+  Testes: 'competencia',
+  'Tempo Real': 'competencia',
+  Autenticação: 'competencia',
+}
+
 /**
  * Os 8 projetos de destaque. Cada um tem uma página própria, feita à mão,
  * em src/pages/projects/flagship — aqui ficam apenas os metadados usados
@@ -79,7 +121,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2026',
     role: 'Full-Stack',
-    tags: ['React', 'Node.js', 'PostgreSQL'],
+    tags: ['React', 'Node.js', 'PostgreSQL', 'Web', 'SaaS', 'Autenticação'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -92,7 +134,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2026',
     role: 'Front-End',
-    tags: ['React', 'TypeScript', 'Tailwind'],
+    tags: ['React', 'TypeScript', 'Tailwind', 'Web', 'Dashboard', 'UI/UX'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -105,7 +147,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2025',
     role: 'Full-Stack',
-    tags: ['Next.js', 'Prisma', 'PostgreSQL'],
+    tags: ['Next.js', 'Prisma', 'PostgreSQL', 'Web', 'SaaS', 'Performance'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -118,7 +160,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2025',
     role: 'Back-End',
-    tags: ['Node.js', 'Docker', 'Redis'],
+    tags: ['Node.js', 'Docker', 'Redis', 'API', 'Ferramenta', 'Tempo Real'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -131,7 +173,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2025',
     role: 'Full-Stack',
-    tags: ['React Native', 'Expo', 'Firebase'],
+    tags: ['React Native', 'Expo', 'Firebase', 'Mobile', 'SaaS', 'Tempo Real'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -144,7 +186,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2024',
     role: 'Front-End',
-    tags: ['React', 'Vite', 'Tailwind'],
+    tags: ['React', 'Vite', 'Tailwind', 'Web', 'Landing Page', 'Acessibilidade'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -157,7 +199,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2024',
     role: 'Full-Stack',
-    tags: ['Next.js', 'Stripe', 'PostgreSQL'],
+    tags: ['Next.js', 'Stripe', 'PostgreSQL', 'Web', 'E-commerce', 'Autenticação'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -170,7 +212,7 @@ export const featuredProjects: FeaturedProject[] = [
     tagline: 'Uma frase de impacto sobre o que este projeto resolve.',
     year: '2024',
     role: 'Full-Stack',
-    tags: ['Node.js', 'React', 'MongoDB'],
+    tags: ['Node.js', 'React', 'MongoDB', 'Web', 'Dashboard', 'Testes'],
     desc: 'Resumo curto do projeto para o card da home. Uma ou duas frases no máximo.',
     shot: 'screenshot principal',
     links: { demo: '#', repo: '#' },
@@ -185,7 +227,7 @@ export const minorProjects: MinorProject[] = [
     name: 'Projeto Menor Um',
     year: '2024',
     role: 'Front-End',
-    tags: ['React', 'CSS'],
+    tags: ['React', 'CSS', 'Web', 'Landing Page', 'UI/UX'],
     desc: 'Resumo curto do projeto para a listagem.',
     shot: 'screenshot',
     links: { demo: '#', repo: '#' },
@@ -201,7 +243,7 @@ export const minorProjects: MinorProject[] = [
     name: 'Projeto Menor Dois',
     year: '2024',
     role: 'Full-Stack',
-    tags: ['Node.js', 'Express'],
+    tags: ['Node.js', 'Express', 'API', 'Ferramenta', 'Autenticação'],
     desc: 'Resumo curto do projeto para a listagem.',
     shot: 'screenshot',
     links: { repo: '#' },
@@ -216,7 +258,7 @@ export const minorProjects: MinorProject[] = [
     name: 'Projeto Menor Três',
     year: '2023',
     role: 'Front-End',
-    tags: ['JavaScript', 'HTML', 'CSS'],
+    tags: ['JavaScript', 'HTML', 'CSS', 'Web', 'Jogo', 'Acessibilidade'],
     desc: 'Resumo curto do projeto para a listagem.',
     shot: 'screenshot',
     links: { demo: '#' },
@@ -231,7 +273,7 @@ export const minorProjects: MinorProject[] = [
     name: 'Projeto Menor Quatro',
     year: '2023',
     role: 'Back-End',
-    tags: ['Node.js', 'SQLite'],
+    tags: ['Node.js', 'SQLite', 'Desktop', 'Ferramenta', 'Performance'],
     desc: 'Resumo curto do projeto para a listagem.',
     shot: 'screenshot',
     links: { repo: '#' },
@@ -242,6 +284,24 @@ export const minorProjects: MinorProject[] = [
     ],
   },
 ]
+
+export type Project = FeaturedProject | MinorProject
+export const allProjects: Project[] = [...featuredProjects, ...minorProjects]
+
+/** Recomendados: rankeia por nº de tags em comum; completa com os demais se faltar. */
+export function getRecommendedProjects(slug: string, limit = 4): Project[] {
+  const current = allProjects.find((p) => p.slug === slug)
+  const others = allProjects.filter((p) => p.slug !== slug)
+  if (!current) return others.slice(0, limit)
+
+  const score = (p: Project) => p.tags.filter((t) => current.tags.includes(t)).length
+
+  return others
+    .map((p, i) => ({ p, s: score(p), i }))
+    .sort((a, b) => b.s - a.s || a.i - b.i)
+    .slice(0, limit)
+    .map((r) => r.p)
+}
 
 export const experience: Experience[] = [
   {
