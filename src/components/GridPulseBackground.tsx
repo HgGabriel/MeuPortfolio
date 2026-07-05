@@ -13,6 +13,11 @@ const GUTTER_VW = 0.47;
 const LINE_WEIGHT = 0.5;
 const PERIOD_MS = 7000; // one full alternate back-and-forth pulse
 
+const BOOST_RADIUS_VW = 14; // reach of the cursor's influence around each cell
+const BOOST_OPACITY = 0.6; // extra opacity added at the cursor's center
+const BOOST_SCALE = 0.6; // extra dot/line growth at the cursor's center
+const MOUSE_LERP = 0.08; // smoothing for the boost fading in/out
+
 interface Cell {
   row: number;
   col: number;
@@ -61,6 +66,10 @@ export default function GridPulseBackground() {
 
     let size = 0;
     let color = "#ffffff";
+    let mouseX = 0;
+    let mouseY = 0;
+    let mouseActive = false;
+    let mouseInfluence = 0;
 
     const readColor = () => {
       color =
@@ -88,6 +97,17 @@ export default function GridPulseBackground() {
       attributeFilter: ["class"],
     });
 
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      mouseActive = true;
+    };
+    const onMouseLeave = () => {
+      mouseActive = false;
+    };
+    window.addEventListener("mousemove", onMouseMove);
+    document.documentElement.addEventListener("mouseleave", onMouseLeave);
+
     let raf = 0;
 
     const draw = (now: number) => {
@@ -97,6 +117,13 @@ export default function GridPulseBackground() {
       const gutter = (GUTTER_VW / 100) * window.innerWidth;
       const lineLenX = Math.max(cw - dotR * 2 - gutter, 0);
       const lineLenY = Math.max(ch - dotR * 2 - gutter, 0);
+
+      mouseInfluence += ((mouseActive ? 1 : 0) - mouseInfluence) * MOUSE_LERP;
+      const boostRadius = (BOOST_RADIUS_VW / 100) * window.innerWidth;
+      const canvasOffsetX = window.innerWidth / 2 - size / 2;
+      const canvasOffsetY = window.innerHeight / 2 - size / 2;
+      const mx = mouseX - canvasOffsetX;
+      const my = mouseY - canvasOffsetY;
 
       ctx.clearRect(0, 0, size, size);
       ctx.fillStyle = color;
@@ -115,17 +142,25 @@ export default function GridPulseBackground() {
         const cx = x + cw / 2;
         const cy = y + ch / 2;
 
-        ctx.globalAlpha = cell.opacity;
+        let boost = 0;
+        if (mouseInfluence > 0.001) {
+          const dist = Math.hypot(cx - mx, cy - my);
+          const proximity = Math.max(0, 1 - dist / boostRadius);
+          boost = proximity * proximity * mouseInfluence;
+        }
+        const ampBoost = 1 + boost * BOOST_SCALE;
+
+        ctx.globalAlpha = Math.min(cell.opacity + boost * BOOST_OPACITY, 1);
 
         if (dotWave > 0.01) {
           ctx.beginPath();
-          ctx.arc(x, y, dotR * dotWave, 0, Math.PI * 2);
+          ctx.arc(x, y, dotR * dotWave * ampBoost, 0, Math.PI * 2);
           ctx.fill();
         }
 
         if (lineWave > 0.01) {
           ctx.beginPath();
-          ctx.arc(cx, cy, dotR * 0.5 * lineWave, 0, Math.PI * 2);
+          ctx.arc(cx, cy, dotR * 0.5 * lineWave * ampBoost, 0, Math.PI * 2);
           ctx.fill();
         }
 
@@ -133,7 +168,8 @@ export default function GridPulseBackground() {
           ctx.save();
           ctx.translate(cx, y);
           ctx.rotate((lineWave * Math.PI) / 2);
-          ctx.fillRect(-lineLenX / 2, -LINE_WEIGHT / 2, lineLenX, LINE_WEIGHT);
+          const weightX = LINE_WEIGHT * ampBoost;
+          ctx.fillRect(-lineLenX / 2, -weightX / 2, lineLenX, weightX);
           ctx.restore();
         }
 
@@ -141,7 +177,8 @@ export default function GridPulseBackground() {
           ctx.save();
           ctx.translate(x, cy);
           ctx.rotate((lineWave * Math.PI) / 2);
-          ctx.fillRect(-LINE_WEIGHT / 2, -lineLenY / 2, LINE_WEIGHT, lineLenY);
+          const weightY = LINE_WEIGHT * ampBoost;
+          ctx.fillRect(-weightY / 2, -lineLenY / 2, weightY, lineLenY);
           ctx.restore();
         }
       }
@@ -167,7 +204,9 @@ export default function GridPulseBackground() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("visibilitychange", onVisibility);
+      document.documentElement.removeEventListener("mouseleave", onMouseLeave);
       themeObserver.disconnect();
     };
   }, []);
