@@ -17,6 +17,10 @@
 }
 
 :root {
+  /* Tema por projeto: cada página flagship sobrescreve estes valores via
+     ProjectPageShell; fora delas, cai no vermelho padrão do portfólio. */
+  --accent-project: #e5322a;
+  --accent-project-soft: rgba(229, 50, 42, 0.12);
   --bg: #0e0e0f;
   --fg: #f3f3f3;
   --muted: rgba(243, 243, 243, 0.56);
