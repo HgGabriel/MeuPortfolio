@@ -231,21 +231,21 @@ export default function CodeTerminal() {
 
         {/* Terminal Output Console */}
         {outputLines.length > 0 && (
-          <div className="mt-4 rounded-lg border border-line bg-black/20 p-3 font-mono text-xs select-none">
+          <div className="mt-4 rounded-lg border border-black/40 bg-[#0c0c0f] p-3 font-mono text-xs select-none">
             {outputLines.map((line, idx) => {
               const isCommand = line === "node developer.ts";
               return (
                 <div key={idx} className="flex items-start gap-2 py-0.5 leading-relaxed">
-                  <span className={isCommand ? "text-accent font-bold" : "text-muted"}>
+                  <span className={isCommand ? "text-accent font-bold" : "text-white/40"}>
                     {isCommand ? "$" : ">"}
                   </span>
                   <span
                     className={
                       isCommand
-                        ? "text-fg font-semibold"
+                        ? "text-white/90 font-semibold"
                         : line.startsWith("✔")
-                        ? "text-emerald-500"
-                        : "text-muted/90"
+                        ? "text-emerald-400"
+                        : "text-white/55"
                     }
                   >
                     {line}
