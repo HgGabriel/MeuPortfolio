@@ -1,6 +1,15 @@
 import { Music, Dices, Footprints } from 'lucide-react'
 import type { ReactNode } from 'react'
 
+/**
+ * URL de imagem de placeholder (Picsum), estável por seed — os projetos ainda
+ * não têm capturas de tela reais, então isso dá uma noção visual do layout
+ * com fotos de verdade em vez do padrão de linhas diagonais.
+ */
+export function placeholderImage(seed: string, width = 800, height = 600): string {
+  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`
+}
+
 export interface ProjectLinks {
   demo?: string
   repo?: string

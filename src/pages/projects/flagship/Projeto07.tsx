@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -31,9 +31,9 @@ export default function Projeto07() {
           {shots.map((s) => (
             <div
               key={s}
-              className="flex aspect-[16/10] w-[280px] shrink-0 items-center justify-center rounded-[14px] border border-line bg-(--accent-project-soft) sm:w-[380px]"
+              className="aspect-[16/10] w-[280px] shrink-0 overflow-hidden rounded-[14px] border border-line bg-(--accent-project-soft) sm:w-[380px]"
             >
-              <span className="font-oswald text-[11px] tracking-[2px] text-muted uppercase">{s}</span>
+              <img src={placeholderImage(`${meta.slug}-${s}`)} alt={s} className="size-full object-cover" />
             </div>
           ))}
         </div>

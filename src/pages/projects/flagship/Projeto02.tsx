@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -44,10 +44,12 @@ export default function Projeto02() {
           <div className="flex flex-col gap-5">
             {['tela principal', 'fluxo em destaque', 'detalhe de interação'].map((shot, i) => (
               <Watermark key={shot} direction="left" duration={650} delay={i * 90} distance={24}>
-                <div className="flex aspect-[16/10] items-center justify-center rounded-[14px] border border-line bg-(--accent-project-soft)">
-                  <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">
-                    {shot}
-                  </span>
+                <div className="aspect-[16/10] overflow-hidden rounded-[14px] border border-line bg-(--accent-project-soft)">
+                  <img
+                    src={placeholderImage(`${meta.slug}-${shot}`)}
+                    alt={shot}
+                    className="size-full object-cover"
+                  />
                 </div>
               </Watermark>
             ))}

@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -28,8 +28,8 @@ export default function Projeto06() {
                 menores ao redor carregam os destaques — números, stack e telas.
               </p>
             </div>
-            <div className="mt-6 flex aspect-[16/8] items-center justify-center rounded-[12px] border border-line bg-(--accent-project-soft)">
-              <span className="font-oswald text-[11px] tracking-[2px] text-muted uppercase">{meta.shot}</span>
+            <div className="mt-6 aspect-[16/8] overflow-hidden rounded-[12px] border border-line bg-(--accent-project-soft)">
+              <img src={placeholderImage(meta.slug)} alt={meta.shot} className="size-full object-cover" />
             </div>
           </div>
         </Watermark>
@@ -86,8 +86,12 @@ export default function Projeto06() {
         {/* Telas extras */}
         {['tela secundária', 'tela mobile'].map((shot, i) => (
           <Watermark key={shot} direction="up" duration={600} delay={220 + i * 60} distance={20}>
-            <div className="flex aspect-square items-center justify-center rounded-[20px] border border-line bg-card">
-              <span className="font-oswald text-[11px] tracking-[2px] text-muted uppercase">{shot}</span>
+            <div className="aspect-square overflow-hidden rounded-[20px] border border-line bg-card">
+              <img
+                src={placeholderImage(`${meta.slug}-${shot}`)}
+                alt={shot}
+                className="size-full object-cover"
+              />
             </div>
           </Watermark>
         ))}

@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -33,8 +33,8 @@ export default function Projeto03() {
         </Watermark>
 
         <Watermark direction="right" duration={650} distance={28} className="lg:ml-auto lg:w-[70%]">
-          <div className="flex aspect-[16/9] items-center justify-center rounded-[14px] border border-line bg-(--accent-project-soft)">
-            <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">{meta.shot}</span>
+          <div className="aspect-[16/9] overflow-hidden rounded-[14px] border border-line bg-(--accent-project-soft)">
+            <img src={placeholderImage(meta.slug)} alt={meta.shot} className="size-full object-cover" />
           </div>
         </Watermark>
 

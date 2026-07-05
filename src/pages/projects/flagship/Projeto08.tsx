@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -20,8 +20,8 @@ export default function Projeto08() {
         </Watermark>
 
         <Watermark direction="up" duration={650} delay={100} distance={22}>
-          <div className="mb-12 flex aspect-[16/9] items-center justify-center rounded-[14px] border border-line bg-(--accent-project-soft)">
-            <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">{meta.shot}</span>
+          <div className="mb-12 aspect-[16/9] overflow-hidden rounded-[14px] border border-line bg-(--accent-project-soft)">
+            <img src={placeholderImage(meta.slug)} alt={meta.shot} className="size-full object-cover" />
           </div>
         </Watermark>
 
@@ -51,10 +51,12 @@ export default function Projeto08() {
             Aqui entra o miolo técnico, ainda em tom de narrativa: as escolhas, os becos sem saída,
             o refactor que valeu a pena. Intercale com a imagem abaixo para dar respiro.
           </p>
-          <div className="mb-10 flex aspect-[16/8] items-center justify-center rounded-[14px] border border-line bg-card">
-            <span className="font-oswald text-[11px] tracking-[2px] text-muted uppercase">
-              diagrama ou tela do processo
-            </span>
+          <div className="mb-10 aspect-[16/8] overflow-hidden rounded-[14px] border border-line bg-card">
+            <img
+              src={placeholderImage(`${meta.slug}-diagrama`)}
+              alt="diagrama ou tela do processo"
+              className="size-full object-cover"
+            />
           </div>
         </Watermark>
 

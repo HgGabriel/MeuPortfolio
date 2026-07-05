@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -48,8 +48,8 @@ export default function Projeto01() {
       </div>
 
       <Watermark direction="up" duration={650} delay={120} distance={24}>
-        <div className="mb-16 flex aspect-[16/8] items-center justify-center rounded-[14px] border border-line bg-(--accent-project-soft)">
-          <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">{meta.shot}</span>
+        <div className="mb-16 aspect-[16/8] overflow-hidden rounded-[14px] border border-line bg-(--accent-project-soft)">
+          <img src={placeholderImage(meta.slug)} alt={meta.shot} className="size-full object-cover" />
         </div>
       </Watermark>
 

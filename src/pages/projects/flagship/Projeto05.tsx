@@ -1,4 +1,4 @@
-import { featuredProjects } from '../../../data'
+import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
 import Watermark from '../../../components/Watermark'
 
@@ -52,10 +52,12 @@ export default function Projeto05() {
               {s.title}
             </h2>
             <p className="m-0 mb-5 max-w-[600px] text-[15.5px] leading-[1.8] text-muted">{s.body}</p>
-            <div className="flex aspect-[16/7] max-w-[600px] items-center justify-center rounded-[12px] border border-line bg-(--accent-project-soft)">
-              <span className="font-oswald text-[11px] tracking-[2px] text-muted uppercase">
-                registro desta fase
-              </span>
+            <div className="aspect-[16/7] max-w-[600px] overflow-hidden rounded-[12px] border border-line bg-(--accent-project-soft)">
+              <img
+                src={placeholderImage(`${meta.slug}-${s.phase}`)}
+                alt={`registro da fase ${s.phase.toLowerCase()}`}
+                className="size-full object-cover"
+              />
             </div>
           </Watermark>
         ))}

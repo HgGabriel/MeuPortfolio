@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { featuredProjects, minorProjects, tagCategories } from '../../data'
+import { featuredProjects, minorProjects, placeholderImage, tagCategories } from '../../data'
 import Watermark from '../../components/Watermark'
 
 const normalize = (s: string) =>
@@ -165,10 +165,12 @@ export default function AllProjectsPage() {
                       style={{ '--accent-project': p.accent, '--accent-project-soft': p.accentSoft } as CSSProperties}
                       className="group flex h-full flex-col rounded-[20px] border border-line bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-(--accent-project) sm:p-7"
                     >
-                      <div className="mb-5 flex aspect-[16/9] items-center justify-center rounded-[12px] border border-line bg-(--accent-project-soft)">
-                        <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">
-                          {p.shot}
-                        </span>
+                      <div className="mb-5 aspect-[16/9] overflow-hidden rounded-[12px] border border-line bg-(--accent-project-soft)">
+                        <img
+                          src={placeholderImage(p.slug)}
+                          alt={p.shot}
+                          className="size-full object-cover"
+                        />
                       </div>
                       <div className="mb-2 flex items-baseline justify-between gap-3 font-oswald text-[12.5px] tracking-[1.5px]">
                         <span className="text-(--accent-project)">{p.year}</span>

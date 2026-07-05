@@ -1,3 +1,4 @@
+import { placeholderImage } from '../../data'
 import type { MinorProject } from '../../data'
 import ProjectPageShell from './ProjectPageShell'
 import Watermark from '../../components/Watermark'
@@ -18,10 +19,8 @@ export default function GenericProjectPage({ project }: GenericProjectPageProps)
       </Watermark>
 
       <Watermark direction="up" duration={650} delay={120} distance={24}>
-        <div className="mb-10 flex aspect-[16/9] items-center justify-center rounded-[14px] border border-line bg-card bg-[repeating-linear-gradient(135deg,var(--soft)_0,var(--soft)_1px,transparent_1px,transparent_13px)]">
-          <span className="font-oswald text-xs tracking-[2px] text-muted uppercase">
-            {project.shot}
-          </span>
+        <div className="mb-10 aspect-[16/9] overflow-hidden rounded-[14px] border border-line bg-card">
+          <img src={placeholderImage(project.slug)} alt={project.shot} className="size-full object-cover" />
         </div>
       </Watermark>
 

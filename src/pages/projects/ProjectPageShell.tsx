@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
-import { getRecommendedProjects } from '../../data'
+import { getRecommendedProjects, placeholderImage } from '../../data'
 import type { FeaturedProject, MinorProject, Project } from '../../data'
 
 interface ProjectPageShellProps {
@@ -25,11 +25,11 @@ function RecommendedCard({ project, sharedTags }: { project: Project; sharedTags
       }`}
     >
       <div
-        className={`flex aspect-[16/9] shrink-0 items-center justify-center rounded-[12px] border border-line sm:aspect-square sm:w-[160px] ${
+        className={`aspect-[16/9] shrink-0 overflow-hidden rounded-[12px] border border-line sm:aspect-square sm:w-[160px] ${
           accent ? 'bg-(--accent-project-soft)' : 'bg-line/15'
         }`}
       >
-        <span className="font-oswald text-[11px] tracking-[2px] text-muted uppercase">{project.shot}</span>
+        <img src={placeholderImage(project.slug)} alt={project.shot} className="size-full object-cover" />
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-2 flex items-baseline justify-between gap-3 font-oswald text-[12.5px] tracking-[1.5px]">

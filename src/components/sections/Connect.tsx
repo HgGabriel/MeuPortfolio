@@ -6,16 +6,18 @@ export default function Connect() {
       data-sec="4"
       className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-[90px] lg:pl-[120px]"
     >
-      <Watermark className="absolute top-[92px] right-4 z-0 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:right-[40px] sm:text-[110px] lg:top-[120px] lg:right-10 lg:text-[150px]">
-        CONNECT
-      </Watermark>
       <div className="relative z-2 mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-[70px]">
         <Watermark direction="left" duration={700} distance={28}>
-          <div className="mb-6 flex items-baseline gap-4 lg:mb-9">
-            <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
-              04
-            </span>
-            <h2 className="m-0 font-oswald text-[30px] font-bold text-accent sm:text-[36px] lg:text-[42px]">Conectar</h2>
+          <div className="relative mb-6 lg:mb-9">
+            <Watermark className="pointer-events-none absolute top-1/2 right-0 z-0 -translate-y-1/2 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:text-[100px] lg:text-[80px]">
+              CONNECT
+            </Watermark>
+            <div className="relative z-2 flex items-baseline gap-4">
+              <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
+                04
+              </span>
+              <h2 className="m-0 font-oswald text-[30px] font-bold text-accent sm:text-[36px] lg:text-[42px]">Conectar</h2>
+            </div>
           </div>
           <h3 className="mb-4 font-poppins text-2xl font-semibold text-fg sm:text-3xl">Vamos conversar</h3>
           <p className="m-0 max-w-[400px] text-base leading-[1.8] text-muted">

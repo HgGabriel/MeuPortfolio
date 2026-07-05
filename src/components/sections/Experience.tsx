@@ -1,4 +1,4 @@
-import { experience, experienceSnapshot } from '../../data'
+import { experience, experienceSnapshot, placeholderImage } from '../../data'
 import Watermark from '../Watermark'
 
 export default function Experience() {
@@ -7,16 +7,18 @@ export default function Experience() {
       data-sec="2"
       className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-20 lg:pl-[120px]"
     >
-      <Watermark className="absolute top-20 right-4 z-0 font-poppins text-[46px] font-extrabold tracking-[-4px] text-wm select-none sm:right-[40px] sm:text-[84px] lg:top-24 lg:right-[60px] lg:text-[118px]">
-        EXPERIENCE
-      </Watermark>
       <div className="relative z-2 mx-auto w-full max-w-[1240px]">
-        <Watermark direction="up" duration={600} distance={20} className="mb-9 flex items-baseline gap-4 lg:mb-12">
-          <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
-            02
-          </span>
-          <h2 className="m-0 font-oswald text-[30px] font-bold text-accent sm:text-[36px] lg:text-[42px]">Experiência</h2>
-        </Watermark>
+        <div className="relative mb-9 lg:mb-12">
+          <Watermark className="pointer-events-none absolute top-1/2 right-0 z-0 -translate-y-1/2 font-poppins text-[46px] font-extrabold tracking-[-4px] text-wm select-none sm:text-[84px] lg:text-[118px]">
+            EXPERIENCE
+          </Watermark>
+          <Watermark direction="up" duration={600} distance={20} className="relative z-2 flex items-baseline gap-4">
+            <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
+              02
+            </span>
+            <h2 className="m-0 font-oswald text-[30px] font-bold text-accent sm:text-[36px] lg:text-[42px]">Experiência</h2>
+          </Watermark>
+        </div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] lg:items-start lg:gap-16">
           {/* Timeline */}
@@ -27,14 +29,12 @@ export default function Experience() {
 
                 <div className="flex items-start gap-4">
                   {/* Logo da empresa (ou monograma como fallback) */}
-                  <div className="flex size-12 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-line bg-card">
-                    {e.logo ? (
-                      <img src={e.logo} alt={`Logo ${e.org}`} className="size-full object-contain p-1.5" />
-                    ) : (
-                      <span className="font-oswald text-lg font-semibold text-muted">
-                        {e.org.charAt(0)}
-                      </span>
-                    )}
+                  <div className="size-12 shrink-0 overflow-hidden rounded-[10px] border border-line bg-card">
+                    <img
+                      src={e.logo || placeholderImage(`${e.org}-${e.period}`, 96, 96)}
+                      alt={`Logo ${e.org}`}
+                      className="size-full object-cover"
+                    />
                   </div>
 
                   <div className="min-w-0">

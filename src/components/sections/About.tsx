@@ -8,16 +8,18 @@ export default function About() {
       data-sec="1"
       className="relative flex h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-20 lg:pl-[120px]"
     >
-      <Watermark className="absolute top-20 right-4 z-0 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:right-[40px] sm:text-[110px] lg:top-24 lg:right-[60px] lg:text-[150px]">
-        ABOUT
-      </Watermark>
       <div className="relative z-2 mx-auto w-full max-w-[1240px]">
-        <Watermark direction="up" duration={600} distance={20} className="mb-9 flex items-baseline gap-4 lg:mb-[46px]">
-          <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
-            01
-          </span>
-          <h2 className="m-0 font-oswald text-[30px] font-bold text-accent sm:text-[36px] lg:text-[42px]">Sobre</h2>
-        </Watermark>
+        <div className="relative mb-9 lg:mb-[46px]">
+          <Watermark className="pointer-events-none absolute top-1/2 right-0 z-0 -translate-y-1/2 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:text-[110px] lg:text-[150px]">
+            ABOUT
+          </Watermark>
+          <Watermark direction="up" duration={600} distance={20} className="relative z-2 flex items-baseline gap-4">
+            <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
+              01
+            </span>
+            <h2 className="m-0 font-oswald text-[30px] font-bold text-accent sm:text-[36px] lg:text-[42px]">Sobre</h2>
+          </Watermark>
+        </div>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_1fr] lg:items-start lg:gap-[60px]">
           <Watermark direction="left" duration={700} delay={100} distance={28}>
             <p className="mb-5 text-[17px] leading-[1.8] text-fg">
