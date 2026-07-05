@@ -10,7 +10,7 @@ export default function Home({ onGoConnect }: HomeProps) {
   return (
     <section
       data-sec="0"
-      className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-24 lg:pr-[90px] lg:pb-[60px] lg:pl-[120px]"
+      className="relative flex h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-24 lg:pr-[90px] lg:pb-[60px] lg:pl-[120px]"
     >
       <div className="mx-auto grid w-full max-w-[1240px] grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-10">
         <Watermark

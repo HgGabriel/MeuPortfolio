@@ -58,7 +58,7 @@ export default function App() {
       const doScroll = () => {
         const el = rootRef.current?.querySelector<HTMLElement>(`[data-sec="${i}"]`)
         if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY - 56
+          const top = el.getBoundingClientRect().top + window.scrollY
           window.scrollTo({ top, behavior: 'smooth' })
           sectionRef.current = i
           setSection(i)

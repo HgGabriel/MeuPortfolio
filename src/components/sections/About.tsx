@@ -9,7 +9,7 @@ export default function About({ onGoPersonal }: AboutProps) {
   return (
     <section
       data-sec="1"
-      className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-20 lg:pl-[120px]"
+      className="relative flex h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-20 lg:pl-[120px]"
     >
       <Watermark className="absolute top-20 right-4 z-0 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:right-[40px] sm:text-[110px] lg:top-24 lg:right-[60px] lg:text-[150px]">
         ABOUT
