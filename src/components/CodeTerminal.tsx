@@ -95,7 +95,7 @@ function prefersReducedMotion(): boolean {
 export default function CodeTerminal() {
   const reducedMotion = useRef(prefersReducedMotion()).current;
   const [charCount, setCharCount] = useState(reducedMotion ? totalLength : 0);
-  const [isTyping, setIsTyping] = useState(!reducedMotion);
+  const [isTyping, setIsTyping] = useState(false);
   const [outputLines, setOutputLines] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const timeoutsRef = useRef<number[]>([]);
@@ -105,6 +105,15 @@ export default function CodeTerminal() {
     timeoutsRef.current.forEach((id) => clearTimeout(id));
     timeoutsRef.current = [];
   }, []);
+
+  // Delay typing initialization on mount to reduce initial CPU load
+  useEffect(() => {
+    if (reducedMotion) return;
+    const timer = setTimeout(() => {
+      setIsTyping(true);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [reducedMotion]);
 
   // Character typing interval
   useEffect(() => {
@@ -116,11 +125,11 @@ export default function CodeTerminal() {
           setIsTyping(false);
           return totalLength;
         }
-        // Random speed variance to make it type more naturally
-        const randomIncrement = Math.random() > 0.45 ? 2 : 1;
+        // Random speed variance, optimized for rendering frequency (35ms)
+        const randomIncrement = Math.random() > 0.45 ? 3 : 2;
         return Math.min(prev + randomIncrement, totalLength);
       });
-    }, 22);
+    }, 35);
 
     return () => clearInterval(interval);
   }, [isTyping]);

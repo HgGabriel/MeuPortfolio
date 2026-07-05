@@ -112,6 +112,8 @@ export default function GridPulseBackground() {
     document.documentElement.addEventListener("mouseleave", onMouseLeave);
 
     let raf = 0;
+    let started = false;
+    let startTimeoutId: number;
 
     const draw = (now: number) => {
       const cw = size / COLS;
@@ -147,9 +149,15 @@ export default function GridPulseBackground() {
 
         let boost = 0;
         if (mouseInfluence > 0.001) {
-          const dist = Math.hypot(cx - mx, cy - my);
-          const proximity = Math.max(0, 1 - dist / boostRadius);
-          boost = proximity * proximity * mouseInfluence;
+          const dx = cx - mx;
+          const dy = cy - my;
+          const distSq = dx * dx + dy * dy;
+          const radiusSq = boostRadius * boostRadius;
+          if (distSq < radiusSq) {
+            const dist = Math.sqrt(distSq);
+            const proximity = Math.max(0, 1 - dist / boostRadius);
+            boost = proximity * proximity * mouseInfluence;
+          }
         }
         const ampBoost = 1 + boost * BOOST_SCALE;
 
@@ -186,19 +194,25 @@ export default function GridPulseBackground() {
         }
       }
 
-      raf = requestAnimationFrame(draw);
+      if (!reduceMotion && started) {
+        raf = requestAnimationFrame(draw);
+      }
     };
 
-    if (reduceMotion) {
-      draw(0);
-    } else {
-      raf = requestAnimationFrame(draw);
+    // Draw the static initial state immediately so the page is not blank
+    draw(0);
+
+    if (!reduceMotion) {
+      startTimeoutId = window.setTimeout(() => {
+        started = true;
+        raf = requestAnimationFrame(draw);
+      }, 1000);
     }
 
     const onVisibility = () => {
       if (document.hidden) {
         cancelAnimationFrame(raf);
-      } else if (!reduceMotion) {
+      } else if (!reduceMotion && started) {
         raf = requestAnimationFrame(draw);
       }
     };
@@ -206,6 +220,7 @@ export default function GridPulseBackground() {
 
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(startTimeoutId);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("visibilitychange", onVisibility);
