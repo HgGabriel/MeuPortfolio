@@ -22,7 +22,7 @@
   --muted: rgba(243, 243, 243, 0.56);
   --card: #161619;
   --border: rgba(255, 255, 255, 0.09);
-  --wm: rgba(255, 255, 255, 0.045);
+  --wm: rgba(255, 255, 255, 0.09);
   --nav: rgba(243, 243, 243, 0.5);
   --soft: rgba(255, 255, 255, 0.06);
 }
@@ -33,7 +33,7 @@
   --muted: rgba(23, 23, 26, 0.56);
   --card: #ffffff;
   --border: rgba(0, 0, 0, 0.08);
-  --wm: rgba(23, 23, 26, 0.045);
+  --wm: rgba(23, 23, 26, 0.09);
   --nav: rgba(23, 23, 26, 0.5);
   --soft: rgba(23, 23, 26, 0.05);
 }
@@ -80,5 +80,46 @@ textarea::placeholder {
   }
   50% {
     box-shadow: 0 0 90px rgba(229, 50, 42, 0.42);
+  }
+}
+
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 50, 42, 0.35) transparent;
+}
+
+.terminal-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(229, 50, 42, 0.28);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 50, 42, 0.5);
+  background-clip: padding-box;
+}
+
+.watermark-transition {
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watermark-transition {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

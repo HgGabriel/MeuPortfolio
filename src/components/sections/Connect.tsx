@@ -1,14 +1,16 @@
+import Watermark from '../Watermark'
+
 export default function Connect() {
   return (
     <section
       data-sec="4"
       className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-[90px] lg:pl-[120px]"
     >
-      <div className="absolute top-[92px] right-4 z-0 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:right-[40px] sm:text-[110px] lg:top-[120px] lg:right-10 lg:text-[150px]">
+      <Watermark className="absolute top-[92px] right-4 z-0 font-poppins text-[64px] font-extrabold tracking-[-4px] text-wm select-none sm:right-[40px] sm:text-[110px] lg:top-[120px] lg:right-10 lg:text-[150px]">
         CONNECT
-      </div>
+      </Watermark>
       <div className="relative z-2 mx-auto grid w-full max-w-[1240px] grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center lg:gap-[70px]">
-        <div>
+        <Watermark direction="left" duration={700} distance={28}>
           <div className="mb-6 flex items-baseline gap-4 lg:mb-9">
             <span className="font-poppins text-4xl leading-none font-extrabold tracking-[-2px] text-soft sm:text-5xl lg:text-6xl">
               04
@@ -20,40 +22,44 @@ export default function Connect() {
             Tem um projeto interessante, uma oportunidade ou só quer trocar uma ideia? Vou adorar
             receber sua mensagem.
           </p>
-        </div>
-        <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5">
-          <div>
-            <label className="mb-[9px] block font-oswald text-sm tracking-[0.5px] text-fg">
-              Nome
-            </label>
-            <input
-              placeholder="João da Silva"
-              className="w-full rounded-[40px] border border-line bg-card px-[22px] py-[15px] font-poppins text-base text-fg"
-            />
-          </div>
-          <div>
-            <label className="mb-[9px] block font-oswald text-sm tracking-[0.5px] text-fg">
-              Email
-            </label>
-            <input
-              placeholder="joao@exemplo.com"
-              className="w-full rounded-[40px] border border-line bg-card px-[22px] py-[15px] font-poppins text-base text-fg"
-            />
-          </div>
-          <div>
-            <label className="mb-[9px] block font-oswald text-sm tracking-[0.5px] text-fg">
-              Mensagem
-            </label>
-            <textarea
-              placeholder="Olá! Vamos nos conectar."
-              rows={4}
-              className="w-full resize-y rounded-[22px] border border-line bg-card px-[22px] py-[15px] font-poppins text-base text-fg"
-            />
-          </div>
-          <button className="cursor-pointer rounded-[40px] border-none bg-accent p-4 font-oswald text-sm font-semibold tracking-[1px] text-white transition-all duration-[180ms] hover:-translate-y-[2px] hover:shadow-[0_12px_26px_rgba(229,50,42,0.35)]">
-            ENVIAR MENSAGEM
-          </button>
-        </form>
+        </Watermark>
+        <Watermark direction="right" duration={700} delay={100} distance={28}>
+          <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-5">
+            <Watermark direction="up" duration={500} delay={220} distance={16}>
+              <label className="mb-[9px] block font-oswald text-sm tracking-[0.5px] text-fg">
+                Nome
+              </label>
+              <input
+                placeholder="João da Silva"
+                className="w-full rounded-[40px] border border-line bg-card px-[22px] py-[15px] font-poppins text-base text-fg"
+              />
+            </Watermark>
+            <Watermark direction="up" duration={500} delay={280} distance={16}>
+              <label className="mb-[9px] block font-oswald text-sm tracking-[0.5px] text-fg">
+                Email
+              </label>
+              <input
+                placeholder="joao@exemplo.com"
+                className="w-full rounded-[40px] border border-line bg-card px-[22px] py-[15px] font-poppins text-base text-fg"
+              />
+            </Watermark>
+            <Watermark direction="up" duration={500} delay={340} distance={16}>
+              <label className="mb-[9px] block font-oswald text-sm tracking-[0.5px] text-fg">
+                Mensagem
+              </label>
+              <textarea
+                placeholder="Olá! Vamos nos conectar."
+                rows={4}
+                className="w-full resize-y rounded-[22px] border border-line bg-card px-[22px] py-[15px] font-poppins text-base text-fg"
+              />
+            </Watermark>
+            <Watermark direction="up" duration={500} delay={400} distance={16}>
+              <button className="w-full cursor-pointer rounded-[40px] border-none bg-accent p-4 font-oswald text-sm font-semibold tracking-[1px] text-white transition-all duration-[180ms] hover:-translate-y-[2px] hover:shadow-[0_12px_26px_rgba(229,50,42,0.35)]">
+                ENVIAR MENSAGEM
+              </button>
+            </Watermark>
+          </form>
+        </Watermark>
       </div>
     </section>
   )

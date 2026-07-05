@@ -1,7 +1,9 @@
-import { MapPin } from 'lucide-react'
+import { MapPin } from "lucide-react";
+import Watermark from "../Watermark";
+import CodeTerminal from "../CodeTerminal";
 
 interface HomeProps {
-  onGoConnect: () => void
+  onGoConnect: () => void;
 }
 
 export default function Home({ onGoConnect }: HomeProps) {
@@ -11,7 +13,12 @@ export default function Home({ onGoConnect }: HomeProps) {
       className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-24 lg:pr-[90px] lg:pb-[60px] lg:pl-[120px]"
     >
       <div className="mx-auto grid w-full max-w-[1240px] grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-10">
-        <div className="relative z-2">
+        <Watermark
+          direction="left"
+          duration={800}
+          distance={32}
+          className="relative z-2"
+        >
           <div className="mb-4 flex items-center gap-2 font-oswald text-[15px] tracking-[0.5px] text-muted">
             <MapPin size={16} strokeWidth={1.7} />
             São Paulo, Brasil
@@ -26,9 +33,10 @@ export default function Home({ onGoConnect }: HomeProps) {
           </h2>
           <div className="mt-[18px] mb-[26px] h-1 w-14 rounded-[2px] bg-accent" />
           <p className="mb-[30px] max-w-[460px] text-[15.5px] leading-[1.75] text-muted">
-            Sou um desenvolvedor full-stack que gosta de aprender e transformar ideias em produtos
-            digitais bem construídos. Busco criar soluções que ofereçam experiências online
-            excelentes — explore meu portfólio e conheça meu trabalho.
+            Sou um desenvolvedor full-stack que gosta de aprender e transformar
+            ideias em produtos digitais bem construídos. Busco criar soluções
+            que ofereçam experiências online excelentes — explore meu portfólio
+            e conheça meu trabalho.
           </p>
           <div className="flex flex-wrap gap-[14px]">
             <button
@@ -41,19 +49,18 @@ export default function Home({ onGoConnect }: HomeProps) {
               CURRÍCULO
             </button>
           </div>
-        </div>
+        </Watermark>
 
-        <div className="relative flex items-center justify-center">
-          <div className="absolute z-0 text-center font-poppins text-[88px] leading-[0.8] font-extrabold tracking-[-4px] text-wm select-none sm:text-[120px] lg:text-[150px]">
-            GA
-            <br />
-            BRIEL
-          </div>
-          <div className="relative z-2 size-[260px] max-w-full animate-glow overflow-hidden rounded-3xl border border-line sm:size-[340px] lg:size-[380px]">
-            <img src={`${import.meta.env.BASE_URL}hero.gif`} alt="hero" className="block size-full object-cover" />
-          </div>
-        </div>
+        <Watermark
+          direction="right"
+          duration={800}
+          delay={150}
+          distance={32}
+          className="relative z-2 w-full"
+        >
+          <CodeTerminal />
+        </Watermark>
       </div>
     </section>
-  )
+  );
 }
