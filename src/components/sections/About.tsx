@@ -11,7 +11,7 @@ export default function About() {
   return (
     <section
       data-sec="1"
-      className="relative flex h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-20 lg:pl-[120px]"
+      className="relative flex min-h-dvh items-center overflow-hidden px-6 pt-28 pb-16 sm:px-10 lg:pt-[100px] lg:pr-[90px] lg:pb-20 lg:pl-[120px]"
     >
       <div className="relative z-2 mx-auto w-full max-w-[1240px]">
         <div className="relative mb-9 lg:mb-[46px]">
