@@ -6,3 +6,16 @@
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
+
+/* Solid theme-colored curtain that rises to cover the grid once the Home
+   section is scrolled past. Its transform is driven directly off scroll
+   position (not a CSS transition) so it stays perfectly in sync as a
+   parallax layer instead of chasing a separately-timed animation. */
+.gpb-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: var(--bg);
+  transform: translateY(100%);
+  pointer-events: none;
+}

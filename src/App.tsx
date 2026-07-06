@@ -42,7 +42,7 @@ export default function App() {
           onToggleTheme={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
         />
         <SocialRail />
-        <div ref={contentRef} tabIndex={-1} className="outline-none">
+        <div ref={contentRef} tabIndex={-1} className="relative z-2 outline-none">
           <Outlet />
         </div>
       </HomeNavContext.Provider>

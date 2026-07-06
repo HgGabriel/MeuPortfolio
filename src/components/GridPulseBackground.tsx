@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import "./GridPulseBackground.css";
 
 const COLS = 40;
@@ -17,6 +18,11 @@ const BOOST_RADIUS_VW = 14; // reach of the cursor's influence around each cell
 const BOOST_OPACITY = 0.6; // extra opacity added at the cursor's center
 const BOOST_SCALE = 0.6; // extra dot/line growth at the cursor's center
 const MOUSE_LERP = 0.08; // smoothing for the boost fading in/out
+
+// Fraction of one viewport height over which the curtain rises to cover the
+// grid (leaving Home) or finishes rising off-screen to uncover it again
+// (arriving at Contato).
+const CURTAIN_RISE_FRACTION = 0.7;
 
 interface Cell {
   row: number;
@@ -53,6 +59,57 @@ function wave(phase: number) {
 
 export default function GridPulseBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const curtainRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  // Ties the curtain + grid opacity directly to scroll position rather than
+  // a timed transition, so the reveal reads as a parallax layer in sync with
+  // the page instead of an animation racing the scroll.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const curtain = curtainRef.current;
+    if (!canvas || !curtain) return;
+
+    if (location.pathname !== "/") {
+      curtain.style.transform = "translateY(0%)";
+      canvas.style.opacity = "0";
+      return;
+    }
+
+    const update = () => {
+      const threshold = window.innerHeight * CURTAIN_RISE_FRACTION;
+
+      // Rises from below to cover the grid as Home is scrolled past.
+      const progressIn = Math.min(window.scrollY / threshold, 1);
+
+      // Keeps rising off the top of the screen on approach to the Contato
+      // section, finishing exactly as it arrives — uncovering the grid
+      // again as a bookend to the Home reveal.
+      const contactEl = document.querySelector<HTMLElement>('[data-sec="4"]');
+      let progressOut = 0;
+      if (contactEl) {
+        const contactTop = contactEl.getBoundingClientRect().top + window.scrollY;
+        progressOut = Math.min(
+          Math.max((window.scrollY - (contactTop - threshold)) / threshold, 0),
+          1,
+        );
+      }
+
+      const coverage = Math.max(progressIn - progressOut, 0);
+      const curtainPos = 100 * (1 - progressIn) - 100 * progressOut;
+
+      curtain.style.transform = `translateY(${curtainPos}%)`;
+      canvas.style.opacity = String(1 - coverage);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -229,5 +286,10 @@ export default function GridPulseBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="gpb-canvas" aria-hidden="true" />;
+  return (
+    <>
+      <canvas ref={canvasRef} className="gpb-canvas" aria-hidden="true" />
+      <div ref={curtainRef} className="gpb-curtain" aria-hidden="true" />
+    </>
+  );
 }
