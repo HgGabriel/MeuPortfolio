@@ -127,3 +127,18 @@ textarea::placeholder {
     transform: none !important;
   }
 }
+
+/* Touch-only section snapping. On desktop the section paradigm is driven by the
+   JS wheel-snap in HomePage; touch never fires wheel events, so without this
+   mobile is pure free-scroll and the section structure isn't legible. `proximity`
+   (not `mandatory`) lets sections taller than the viewport stay freely
+   scrollable — they only settle to the top when the user stops near a boundary.
+   Scoped to coarse pointers so it never fights the desktop wheel-snap. */
+@media (hover: none) and (pointer: coarse) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  [data-sec] {
+    scroll-snap-align: start;
+  }
+}

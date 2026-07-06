@@ -79,8 +79,20 @@ export default function GridPulseBackground() {
     const update = () => {
       const threshold = window.innerHeight * CURTAIN_RISE_FRACTION;
 
-      // Rises from below to cover the grid as Home is scrolled past.
-      const progressIn = Math.min(window.scrollY / threshold, 1);
+      // Rises from below to cover the grid as Home is scrolled past. Anchored to
+      // the About section's top (not a raw fraction of the viewport) so the grid
+      // stays fully visible for the whole Home section: on touch the user lingers
+      // mid-Home instead of snap-jumping past it, and a viewport-fraction cutoff
+      // would kill the grid while Home content (the terminal) is still on screen.
+      const aboutEl = document.querySelector<HTMLElement>('[data-sec="1"]');
+      let progressIn = Math.min(window.scrollY / threshold, 1);
+      if (aboutEl) {
+        const aboutTop = aboutEl.getBoundingClientRect().top + window.scrollY;
+        progressIn = Math.min(
+          Math.max((window.scrollY - (aboutTop - threshold)) / threshold, 0),
+          1,
+        );
+      }
 
       // Keeps rising off the top of the screen on approach to the Contato
       // section, finishing exactly as it arrives — uncovering the grid
