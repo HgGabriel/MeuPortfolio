@@ -1,4 +1,4 @@
-import { hobbies, placeholderImage, projects } from "../data";
+import { hobbies, placeholderImage, minorProjects } from "../data";
 import Watermark from "./Watermark";
 
 interface DetailsPageProps {
@@ -104,7 +104,7 @@ export default function DetailsPage({ onGoHome }: DetailsPageProps) {
             Detalhes dos projetos
           </h2>
           <div className="flex flex-col gap-[30px]">
-            {projects.map((p) => (
+            {minorProjects.map((p) => (
               <div
                 key={p.name}
                 className="grid grid-cols-1 gap-6 rounded-[20px] border border-line bg-card p-5 transition-colors duration-200 hover:border-accent sm:p-7 lg:grid-cols-[.85fr_1.15fr] lg:items-center lg:gap-10"
