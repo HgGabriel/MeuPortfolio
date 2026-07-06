@@ -102,11 +102,16 @@ export default function GridPulseBackground() {
       canvas.style.opacity = String(1 - coverage);
     };
 
-    update();
-    window.addEventListener("scroll", update, { passive: true });
+    // Polled via rAF instead of a "scroll" listener: mobile Safari fires
+    // scroll events sparsely during momentum scrolling, which would leave
+    // the curtain visibly lagging behind the actual scroll position.
+    let raf = requestAnimationFrame(function tick() {
+      update();
+      raf = requestAnimationFrame(tick);
+    });
     window.addEventListener("resize", update);
     return () => {
-      window.removeEventListener("scroll", update);
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", update);
     };
   }, [location.pathname]);
