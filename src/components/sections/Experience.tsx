@@ -1,4 +1,5 @@
 import { experience, experienceSnapshot, placeholderImage } from '../../data'
+import StackTag from '../StackTag'
 import Watermark from '../Watermark'
 
 export default function Experience() {
@@ -49,12 +50,11 @@ export default function Experience() {
                 {/* Stack */}
                 <div className="mt-[14px] flex flex-wrap gap-2">
                   {e.stack.map((s) => (
-                    <span
+                    <StackTag
                       key={s}
+                      label={s}
                       className="rounded-[20px] border border-line px-3 py-[5px] font-oswald text-[12.5px] tracking-[0.3px] text-muted"
-                    >
-                      {s}
-                    </span>
+                    />
                   ))}
                 </div>
 
@@ -112,12 +112,11 @@ export default function Experience() {
               </div>
               <div className="mb-6 flex flex-wrap gap-2">
                 {experienceSnapshot.coreStack.map((s) => (
-                  <span
+                  <StackTag
                     key={s}
+                    label={s}
                     className="rounded-[20px] border border-line bg-card px-3 py-[5px] font-oswald text-[12.5px] tracking-[0.3px] text-fg"
-                  >
-                    {s}
-                  </span>
+                  />
                 ))}
               </div>
 

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { featuredProjects } from '../../data'
+import StackTag from '../StackTag'
 import Watermark from '../Watermark'
 import TiltPreview from '../TiltPreview'
 
@@ -37,12 +38,11 @@ export default function Projects() {
               <h3 className="mt-5 mb-3 font-poppins text-[23px] font-semibold text-fg">{p.name}</h3>
               <div className="mb-[14px] flex flex-wrap gap-2">
                 {p.tags.map((t) => (
-                  <span
+                  <StackTag
                     key={t}
+                    label={t}
                     className="rounded-[20px] border border-line px-3 py-[5px] font-oswald text-[12.5px] tracking-[0.3px] text-muted"
-                  >
-                    {t}
-                  </span>
+                  />
                 ))}
               </div>
               <p className="mb-4 text-[15px] leading-[1.7] text-muted">{p.desc}</p>

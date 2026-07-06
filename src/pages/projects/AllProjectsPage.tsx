@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { featuredProjects, minorProjects, placeholderImage, tagCategories } from '../../data'
+import StackTag from '../../components/StackTag'
 import Watermark from '../../components/Watermark'
 
 const normalize = (s: string) =>
@@ -180,12 +181,11 @@ export default function AllProjectsPage() {
                       <p className="mb-4 text-[14.5px] leading-[1.7] text-muted">{p.tagline}</p>
                       <span className="mb-5 flex flex-wrap gap-2">
                         {p.tags.slice(0, 3).map((t) => (
-                          <span
+                          <StackTag
                             key={t}
+                            label={t}
                             className="rounded-[20px] border border-line px-3 py-[4px] font-oswald text-[12px] tracking-[0.5px] text-muted"
-                          >
-                            {t}
-                          </span>
+                          />
                         ))}
                       </span>
                       <div className="mt-auto inline-flex items-center gap-[10px] font-oswald text-[13px] font-semibold tracking-[1px] text-(--accent-project)">
@@ -224,12 +224,11 @@ export default function AllProjectsPage() {
                       <div className="flex items-center gap-4">
                         <span className="hidden flex-wrap gap-2 sm:flex">
                           {p.tags.map((t) => (
-                            <span
+                            <StackTag
                               key={t}
+                              label={t}
                               className="rounded-[20px] border border-line px-3 py-[4px] font-oswald text-[12px] tracking-[0.5px] text-muted"
-                            >
-                              {t}
-                            </span>
+                            />
                           ))}
                         </span>
                         <span className="font-oswald text-accent transition-transform duration-200 group-hover:translate-x-1">

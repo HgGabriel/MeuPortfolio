@@ -1,5 +1,6 @@
 import { featuredProjects, placeholderImage } from '../../../data'
 import ProjectPageShell from '../ProjectPageShell'
+import StackTag from '../../../components/StackTag'
 import Watermark from '../../../components/Watermark'
 
 const meta = featuredProjects.find((p) => p.slug === 'projeto-seis')!
@@ -59,12 +60,11 @@ export default function Projeto06() {
             </div>
             <div className="flex flex-wrap gap-2">
               {meta.tags.map((t) => (
-                <span
+                <StackTag
                   key={t}
+                  label={t}
                   className="rounded-[20px] border border-line bg-(--accent-project-soft) px-4 py-[7px] font-oswald text-[13px] tracking-[0.4px] text-fg"
-                >
-                  {t}
-                </span>
+                />
               ))}
             </div>
           </div>

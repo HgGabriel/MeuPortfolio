@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom'
+import StackIcon from 'tech-stack-icons'
 import { skills } from '../../data'
+import { STACK_ICON_NAMES } from '../../lib/stackIcons'
+import { useIsLightTheme } from '../../lib/useIsLightTheme'
 import Watermark from '../Watermark'
 
 export default function About() {
+  const isLight = useIsLightTheme()
+
   return (
     <section
       data-sec="1"
@@ -44,14 +49,24 @@ export default function About() {
             <div className="mb-4 font-oswald text-sm font-medium tracking-[1px] text-muted">
               STACK & FERRAMENTAS
             </div>
-            <div className="flex flex-wrap gap-[10px]">
-              {skills.map((s, i) => (
-                <Watermark key={s} direction="up" duration={450} delay={200 + i * 45} distance={14}>
-                  <span className="rounded-[30px] border border-line bg-card px-4 py-[9px] font-oswald text-sm tracking-[0.4px] text-fg">
-                    {s}
-                  </span>
-                </Watermark>
-              ))}
+            <div className="grid grid-cols-3 gap-2">
+              {skills.map((s, i) => {
+                const icon = STACK_ICON_NAMES[s]
+                return (
+                  <Watermark key={s} direction="up" duration={450} delay={200 + i * 45} distance={14}>
+                    <div className="flex flex-col items-center justify-center gap-[6px] rounded-[14px] border border-line bg-card px-2 py-3 text-center transition-all duration-200 hover:-translate-y-1 hover:border-accent">
+                      {icon && (
+                        <StackIcon
+                          name={icon}
+                          variant={isLight ? 'light' : 'dark'}
+                          className="size-[22px] shrink-0"
+                        />
+                      )}
+                      <span className="font-oswald text-[11px] tracking-[0.4px] text-fg">{s}</span>
+                    </div>
+                  </Watermark>
+                )
+              })}
             </div>
           </Watermark>
         </div>

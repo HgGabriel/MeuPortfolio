@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
 import { getRecommendedProjects, placeholderImage } from '../../data'
 import type { FeaturedProject, MinorProject, Project } from '../../data'
+import StackTag from '../../components/StackTag'
 
 interface ProjectPageShellProps {
   meta: FeaturedProject | MinorProject
@@ -40,12 +41,11 @@ function RecommendedCard({ project, sharedTags }: { project: Project; sharedTags
         <p className="mb-4 text-[14px] leading-[1.6] text-muted">{description}</p>
         <span className="mt-auto flex flex-wrap gap-2">
           {sharedTags.slice(0, 3).map((t) => (
-            <span
+            <StackTag
               key={t}
+              label={t}
               className="rounded-[20px] border border-line px-3 py-[4px] font-oswald text-[12px] tracking-[0.5px] text-muted"
-            >
-              {t}
-            </span>
+            />
           ))}
         </span>
       </div>
@@ -101,12 +101,11 @@ export default function ProjectPageShell({ meta, children }: ProjectPageShellPro
             <span className="text-muted uppercase">{meta.role}</span>
             <span className="flex flex-wrap gap-2">
               {meta.tags.map((t) => (
-                <span
+                <StackTag
                   key={t}
+                  label={t}
                   className="rounded-[20px] border border-line px-3 py-[4px] text-[12px] tracking-[0.5px] text-muted"
-                >
-                  {t}
-                </span>
+                />
               ))}
             </span>
           </div>
