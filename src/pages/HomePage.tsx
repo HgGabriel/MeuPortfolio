@@ -141,11 +141,21 @@ export default function HomePage() {
       if (go(dir)) e.preventDefault()
     }
 
+    // On touch devices there's no wheel event, but scrollToSection still runs
+    // a native smooth-scroll (from nav taps, the "go to Connect" button, etc.).
+    // A finger dragging mid-animation fights that native animation and produces
+    // a visible jerk/pull, so swallow touch scrolling for the animation's duration.
+    const onTouchMove = (e: TouchEvent) => {
+      if (animatingRef.current) e.preventDefault()
+    }
+
     window.addEventListener('wheel', onWheel, { passive: false })
     window.addEventListener('keydown', onKey)
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
     return () => {
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('keydown', onKey)
+      window.removeEventListener('touchmove', onTouchMove)
       clearTimeout(lockTimerRef.current)
     }
   }, [scrollToSection])
